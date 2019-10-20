@@ -11,7 +11,7 @@
 __version__ = '0.0.1'
 
 
-def cli():
+def cli() -> None:
     pass
 
 

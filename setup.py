@@ -3,6 +3,15 @@ from setuptools import Command, find_packages, setup
 
 import ty_cli
 
+extras_require = {
+    'test': [
+        'pytest',
+        'pytest-cov',
+        'mypy>=0.740',
+    ],
+}
+
+
 
 class Sphinx(Command):
     user_options = []

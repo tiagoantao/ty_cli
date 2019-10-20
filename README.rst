@@ -2,7 +2,9 @@
 ty_cli
 ======
 
-.. image: https://dev.azure.com/tiagoantao/ty_cli/_apis/build/status/tiagoantao.ty_cli?branchName=master
+|azure|
+
+
 
 
 
@@ -29,3 +31,4 @@ Copyright 2019- Tiago Rodrigues Antao.
 Licensed under the GNU Affero General Public License version 3.
 
 .. _Documentation: docs/index.rst
+.. |azure|: https://dev.azure.com/tiagoantao/ty_cli/_apis/build/status/tiagoantao.ty_cli?branchName=master

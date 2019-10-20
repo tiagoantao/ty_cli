@@ -1,6 +1,10 @@
-# ty_cli
+======
+ty_cli
+======
 
-## Intro
+
+Intro
+=====
 
 ty_cli is an extremely opinionated command line parsing
 library. Because it decides everything for you, its interface is dead
@@ -11,12 +15,16 @@ It is based and requires type annotations (a la in mypy). It requires
 Python 3.6 or above.
 
 
-## [Development notes](devel.md)
+`Development notes`_
+====================
 
 For those interested in contributing.
 
-## Legalese
+Legalese
+========
 
 Copyright 2019- Tiago Rodrigues Antao.
 
 Licensed under the GNU Affero General Public License version 3.
+
+.. _Development notes: development.rst

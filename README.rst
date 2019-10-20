@@ -2,6 +2,9 @@
 ty_cli
 ======
 
+.. image: https://dev.azure.com/tiagoantao/ty_cli/_apis/build/status/tiagoantao.ty_cli?branchName=master
+
+
 
 Intro
 =====

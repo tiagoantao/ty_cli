@@ -15,10 +15,8 @@ It is based and requires type annotations (a la in mypy). It requires
 Python 3.6 or above.
 
 
-`Development notes`_
-====================
+Documentation_
 
-For those interested in contributing.
 
 Legalese
 ========
@@ -27,4 +25,4 @@ Copyright 2019- Tiago Rodrigues Antao.
 
 Licensed under the GNU Affero General Public License version 3.
 
-.. _Development notes: development.rst
+.. _Documentation: docs/index.rst

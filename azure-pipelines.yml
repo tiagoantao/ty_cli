@@ -27,6 +27,11 @@ steps:
   displayName: 'Install dependencies'
 
 - script: |
+    pip install mypy
+    mypy -p ty_cli
+  displayName: 'mypy check'
+
+- script: |
     pip install pytest pytest-azurepipelines
     pytest
   displayName: 'pytest'

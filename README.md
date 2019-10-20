@@ -9,7 +9,7 @@ library. Because it decides everything for you, its interface is dead
 simple. Its particularly good if you need a quick CLI interface with
 almost zero effort.
 
-It is based and requires type annotations (a la in mypy). It requires
+It is based on and requires type annotations (a la in mypy). It requires
 Python 3.6 or above.
 
 

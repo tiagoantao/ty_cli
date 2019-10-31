@@ -7,24 +7,44 @@
     :copyright: Copyright 2019- Tiago Antao.
     :license: AGPL 3.0, see LICENSE for details.
 """
+import argparse
+import copy
+import inspect
 from typing import Any, Callable, TypeVar, cast
 
-
 __version__ = '0.0.1'
-
 
 FuncType = Callable[..., Any]
 F = TypeVar('F', bound=FuncType)
 
 
+def create_argparse_from_function_signature(fun: F) -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(description=fun.__name__)
+    arg_spec = inspect.getfullargspec(fun)
+    print(arg_spec)
+    return parser
+
+
+def try_call_using_cli(fun: F) -> None:
+    parser = create_argparse_from_function_signature(fun)
+    parser.parse_args()
+
+
+def emit_help(fun: F) -> str:
+    pass
+
+
+# XXX def a(*,...) support
+
 def cli(fun: F) -> F:
     def wrapper(*args, **kwargs):  # type: ignore
-        return fun(*args, **kwargs)
+        if len(args) > 0 or len(kwargs) > 0:
+            # This is a non-cli call
+            return fun(*args, **kwargs)
+        return try_call_using_cli(fun)
+    wrapper.__annotations__ = copy.copy(fun.__annotations__)
+    wrapper.__defaults__ = copy.copy(fun.__defaults__)
     return cast(F, wrapper)
 
-
-@cli
-def bla(a: int, b: str) -> None:
-    pass
 
 __all__ = ['__version__', 'cli']

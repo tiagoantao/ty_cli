@@ -21,13 +21,23 @@ F = TypeVar('F', bound=FuncType)
 def create_argparse_from_function_signature(fun: F) -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description=fun.__name__)
     arg_spec = inspect.getfullargspec(fun)
-    print(arg_spec)
+    for arg in arg_spec.args:
+        parser.add_argument(arg, type=arg_spec.annotations[arg])
+        print(arg)
+    print(arg_spec, arg_spec.args)
+    print(parser)
     return parser
+
+
+def call_with_arguments(fun, arguments):
+    pass
 
 
 def try_call_using_cli(fun: F) -> None:
     parser = create_argparse_from_function_signature(fun)
-    parser.parse_args()
+    arguments = parser.parse_args()
+    print(arguments)
+    call_with_arguments(fun, arguments)
 
 
 def emit_help(fun: F) -> str:
@@ -41,7 +51,7 @@ def cli(fun: F) -> F:
         if len(args) > 0 or len(kwargs) > 0:
             # This is a non-cli call
             return fun(*args, **kwargs)
-        return try_call_using_cli(fun)
+        try_call_using_cli(fun)
     wrapper.__annotations__ = copy.copy(fun.__annotations__)
     wrapper.__defaults__ = copy.copy(fun.__defaults__)
     return cast(F, wrapper)

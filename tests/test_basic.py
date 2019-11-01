@@ -14,3 +14,7 @@ def test_signature():
     wrapped_fun = ty_cli.cli(_fun_int_str)
     assert wrapped_fun.__annotations__ == _fun_int_str.__annotations__
     assert wrapped_fun.__defaults__ == _fun_int_str.__defaults__
+
+
+def test_create_argparse_from_function_signature():
+    ty_cli.create_argparse_from_function_signature(_fun_int_str)

@@ -24,7 +24,14 @@ def create_argparse_from_function_signature(fun: F) -> argparse.ArgumentParser:
     for arg in arg_spec.args:
         parser.add_argument(arg, type=arg_spec.annotations[arg])
         print(arg)
-    print(arg_spec, arg_spec.args)
+    for arg in arg_spec.kwonlyargs:
+        if arg in (arg_spec.kwonlydefaults or {}):
+            parser.add_argument('--' + arg, type=arg_spec.annotations[arg],
+                                default=arg_spec.kwonlydefaults[arg])
+        else:
+            parser.add_argument('--' + arg, type=arg_spec.annotations[arg], required=True)
+        print(arg)
+    print(arg_spec, arg_spec.args, arg_spec.kwonlyargs)
     print(parser)
     return parser
 
@@ -44,8 +51,6 @@ def emit_help(fun: F) -> str:
     pass
 
 
-# XXX def a(*,...) support
-
 def cli(fun: F) -> F:
     def wrapper(*args, **kwargs):  # type: ignore
         if len(args) > 0 or len(kwargs) > 0:
@@ -54,6 +59,8 @@ def cli(fun: F) -> F:
         try_call_using_cli(fun)
     wrapper.__annotations__ = copy.copy(fun.__annotations__)
     wrapper.__defaults__ = copy.copy(fun.__defaults__)
+    wrapper.__kwdefaults__ = copy.copy(fun.__kwdefaults__)
+    # XXX What about read-only fields like __code__.co.* ??
     return cast(F, wrapper)
 
 

@@ -25,11 +25,12 @@ def create_argparse_from_function_signature(fun: F) -> argparse.ArgumentParser:
         parser.add_argument(arg, type=arg_spec.annotations[arg])
         print(arg)
     for arg in arg_spec.kwonlyargs:
+        arg_cli = arg.replace('_', '-')
         if arg in (arg_spec.kwonlydefaults or {}):
-            parser.add_argument('--' + arg, type=arg_spec.annotations[arg],
+            parser.add_argument('--' + arg_cli, type=arg_spec.annotations[arg],
                                 default=arg_spec.kwonlydefaults[arg])
         else:
-            parser.add_argument('--' + arg, type=arg_spec.annotations[arg], required=True)
+            parser.add_argument('--' + arg_cli, type=arg_spec.annotations[arg], required=True)
         print(arg)
     print(arg_spec, arg_spec.args, arg_spec.kwonlyargs)
     print(parser)

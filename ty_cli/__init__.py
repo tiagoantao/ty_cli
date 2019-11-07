@@ -34,9 +34,10 @@ def create_argparse_from_function_signature(fun: F) -> argparse.ArgumentParser:
     return parser
 
 
-def call_with_arguments(fun, arguments):
+def call_with_arguments(fun: F, arguments: argparse.Namespace) -> None:
     print(arguments._get_kwargs())
     fun(*arguments._get_args(), **{k: v for k, v in arguments._get_kwargs()})
+    return
 
 
 def try_call_using_cli(fun: F) -> None:
@@ -58,8 +59,8 @@ def cli(fun: F) -> F:
         try_call_using_cli(fun)
     # Is this even a good idea:
     wrapper.__annotations__ = copy.copy(fun.__annotations__)
-    wrapper.__defaults__ = copy.copy(fun.__defaults__)
-    wrapper.__kwdefaults__ = copy.copy(fun.__kwdefaults__)
+    wrapper.__defaults__ = copy.copy(fun.__defaults__)  # type: ignore
+    wrapper.__kwdefaults__ = copy.copy(fun.__kwdefaults__)  # type: ignore
     # XXX What about read-only fields like __code__.co.* ??
     return cast(F, wrapper)
 

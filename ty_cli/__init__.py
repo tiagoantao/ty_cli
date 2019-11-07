@@ -23,7 +23,6 @@ def create_argparse_from_function_signature(fun: F) -> argparse.ArgumentParser:
     arg_spec = inspect.getfullargspec(fun)
     for arg in arg_spec.args:
         parser.add_argument(arg, type=arg_spec.annotations[arg])
-        print(arg)
     for arg in arg_spec.kwonlyargs:
         arg_cli = arg.replace('_', '-')
         if arg in (arg_spec.kwonlydefaults or {}):
@@ -31,14 +30,13 @@ def create_argparse_from_function_signature(fun: F) -> argparse.ArgumentParser:
                                 default=arg_spec.kwonlydefaults[arg])
         else:
             parser.add_argument('--' + arg_cli, type=arg_spec.annotations[arg], required=True)
-        print(arg)
     print(arg_spec, arg_spec.args, arg_spec.kwonlyargs)
-    print(parser)
     return parser
 
 
 def call_with_arguments(fun, arguments):
-    pass
+    print(arguments._get_kwargs())
+    fun(*arguments._get_args(), **{k: v for k, v in arguments._get_kwargs()})
 
 
 def try_call_using_cli(fun: F) -> None:
@@ -58,6 +56,7 @@ def cli(fun: F) -> F:
             # This is a non-cli call
             return fun(*args, **kwargs)
         try_call_using_cli(fun)
+    # Is this even a good idea:
     wrapper.__annotations__ = copy.copy(fun.__annotations__)
     wrapper.__defaults__ = copy.copy(fun.__defaults__)
     wrapper.__kwdefaults__ = copy.copy(fun.__kwdefaults__)

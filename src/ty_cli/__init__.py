@@ -12,14 +12,12 @@ import copy
 import inspect
 from typing import Any, Callable, TypeVar, cast
 
-__version__ = '0.0.1'
-
 FuncType = Callable[..., Any]
 F = TypeVar('F', bound=FuncType)
 
 
 def create_argparse_from_function_signature(fun: F) -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(description=fun.__name__)
+    parser = argparse.ArgumentParser(description=fun.__name__ + ': ' +  fun.__doc__)
     arg_spec = inspect.getfullargspec(fun)
     for arg in arg_spec.args:
         parser.add_argument(arg, type=arg_spec.annotations[arg])
@@ -66,3 +64,4 @@ def cli(fun: F) -> F:
 
 
 __all__ = ['__version__', 'cli']
+__version__ = '0.0.1'

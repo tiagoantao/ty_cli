@@ -22,4 +22,3 @@ Copyright 2019- Tiago Rodrigues Antao.
 
 Licensed under the GNU Affero General Public License version 3.
 
-

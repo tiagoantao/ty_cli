@@ -2,6 +2,7 @@ import ty_cli
 
 
 def _fun_int_to_str(number: int) -> str:
+    '''Some documentation'''
     return f'{number}'
 
 

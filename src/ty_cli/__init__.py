@@ -17,7 +17,8 @@ F = TypeVar('F', bound=FuncType)
 
 
 def create_argparse_from_function_signature(fun: F) -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(description=fun.__name__ + ': ' + (fun.__doc__ or 'NA'))
+    parser = argparse.ArgumentParser(
+        description=fun.__name__ + ': ' + (fun.__doc__ or 'NA'))
     arg_spec = inspect.getfullargspec(fun)
     for arg in arg_spec.args:
         parser.add_argument(arg, type=arg_spec.annotations[arg])
@@ -27,7 +28,8 @@ def create_argparse_from_function_signature(fun: F) -> argparse.ArgumentParser:
             parser.add_argument('--' + arg_cli, type=arg_spec.annotations[arg],
                                 default=arg_spec.kwonlydefaults[arg])
         else:
-            parser.add_argument('--' + arg_cli, type=arg_spec.annotations[arg], required=True)
+            parser.add_argument('--' + arg_cli,
+                                type=arg_spec.annotations[arg], required=True)
     print(arg_spec, arg_spec.args, arg_spec.kwonlyargs)
     return parser
 

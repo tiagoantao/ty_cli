@@ -4,7 +4,7 @@
 
     Easy command line interfaces in Python using explict typing.
 
-    :copyright: Copyright 2019- Tiago Antao.
+    :copyright: Copyright 2019 - Tiago Antao.
     :license: AGPL 3.0, see LICENSE for details.
 """
 import argparse
@@ -17,7 +17,7 @@ F = TypeVar('F', bound=FuncType)
 
 
 def create_argparse_from_function_signature(fun: F) -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(description=fun.__name__ + ': ' +  fun.__doc__)
+    parser = argparse.ArgumentParser(description=fun.__name__ + ': ' + (fun.__doc__ or 'NA'))
     arg_spec = inspect.getfullargspec(fun)
     for arg in arg_spec.args:
         parser.add_argument(arg, type=arg_spec.annotations[arg])

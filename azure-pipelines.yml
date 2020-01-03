@@ -23,7 +23,8 @@ steps:
 
 - script: |
     pip install mypy
-    PYTHONPATH=src mypy -p ty_cli
+    cd src
+    mypy -p ty_cli
   displayName: 'mypy check'
 
 - script: |

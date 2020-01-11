@@ -16,7 +16,7 @@ from typing import Any, Callable, cast, Optional, TypeVar
 FuncType = Callable[..., Any]
 F = TypeVar('F', bound=FuncType)
 
-module_calls = defaultdict(list)
+module_calls: Dict[str, F] = defaultdict(list)
 
 
 def create_argparse_from_function_signature(fun: F) -> argparse.ArgumentParser:

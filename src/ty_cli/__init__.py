@@ -1,4 +1,4 @@
-"""
+'''
     ty_cli
     ~~~~~~
 
@@ -6,14 +6,17 @@
 
     :copyright: Copyright 2019 - Tiago Antao.
     :license: AGPL 3.0, see LICENSE for details.
-"""
+'''
 import argparse
+from collections import defaultdict
 import copy
 import inspect
-from typing import Any, Callable, TypeVar, cast
+from typing import Any, Callable, cast, Optional, TypeVar
 
 FuncType = Callable[..., Any]
 F = TypeVar('F', bound=FuncType)
+
+module_calls = defaultdict(list)
 
 
 def create_argparse_from_function_signature(fun: F) -> argparse.ArgumentParser:
@@ -24,7 +27,8 @@ def create_argparse_from_function_signature(fun: F) -> argparse.ArgumentParser:
         parser.add_argument(arg, type=arg_spec.annotations[arg])
     for arg in arg_spec.kwonlyargs:
         arg_cli = arg.replace('_', '-')
-        if arg_spec.kwonlydefaults is not None and arg in arg_spec.kwonlydefaults:
+        if (arg_spec.kwonlydefaults is not None and
+                arg in arg_spec.kwonlydefaults):
             parser.add_argument('--' + arg_cli, type=arg_spec.annotations[arg],
                                 default=arg_spec.kwonlydefaults[arg])
         else:
@@ -51,7 +55,19 @@ def emit_help(fun: F) -> str:
     pass
 
 
-def cli(fun: F) -> F:
+def cli(fun: Optional[F] = None) -> Optional[F]:
+    frame = inspect.currentframe()
+    outer_frame = inspect.getouterframes(frame)[1]
+    if fun is None:
+        all_calls = module_calls[outer_frame.filename]
+        if len(all_calls) == 0:
+            pass
+        elif len(all_calls) == 1:
+            all_calls[0]()
+        else:
+            pass
+        return
+
     def wrapper(*args, **kwargs):  # type: ignore
         if len(args) > 0 or len(kwargs) > 0:
             # This is a non-cli call
@@ -62,6 +78,7 @@ def cli(fun: F) -> F:
     wrapper.__defaults__ = copy.copy(fun.__defaults__)  # type: ignore
     wrapper.__kwdefaults__ = copy.copy(fun.__kwdefaults__)  # type: ignore
     # XXX What about read-only fields like __code__.co.* ??
+    module_calls[outer_frame.filename].append(wrapper)
     return cast(F, wrapper)
 
 

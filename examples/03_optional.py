@@ -1,12 +1,11 @@
+from typing import Optional
+
 from ty_cli import cli
 
 
 @cli
-def int_to_str(*, number: int, my_str: str = 'abc') -> str:
-    '''This is some documentation:
-
-    Here is more'''
-    return f'{number} {my_str}'
-
-
-int_to_str()
+def greet(*, first_name: str, last_name: Optional[str]) -> None:
+    if last_name is None:
+        print(f'Howdy {first_name}!')
+    else:
+        print(f'Dear {first_name} {last_name}')

@@ -10,7 +10,41 @@ simple. Its particularly good if you need a quick CLI interface with
 almost zero effort.
 
 It is based on and requires type annotations (a la in mypy). It requires
-Python 3.6 or above.
+Python 3.7 or above.
+
+
+## Examples
+
+### Hello world
+
+```python
+from ty_cli import cli
+
+@cli
+def hello(name: str) -> None:
+    '''Hello world: the typical example.
+    
+    Here is some documentation'''
+    print(f'Hello {name}')
+    
+hello()
+```
+
+`python hello.py --help`
+
+`python hello.py Randi`
+
+If you want, you can force the naming on parameters on the CLI:
+
+```python
+from ty_cli import cli
+
+@cli
+def hello(*, name: str) -> None:
+    print(f'Hello {name}')
+```
+
+`python hello.py --name Randi`
 
 
 [Documentation](docs/index.rst)

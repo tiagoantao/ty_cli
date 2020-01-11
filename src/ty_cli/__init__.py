@@ -11,7 +11,7 @@ import argparse
 from collections import defaultdict
 import copy
 import inspect
-from typing import Any, Callable, cast, Optional, TypeVar
+from typing import Any, Callable, cast, Dict, Optional, TypeVar
 
 FuncType = Callable[..., Any]
 F = TypeVar('F', bound=FuncType)
@@ -66,7 +66,7 @@ def cli(fun: Optional[F] = None) -> Optional[F]:
             all_calls[0]()
         else:
             pass
-        return
+        return None
 
     def wrapper(*args, **kwargs):  # type: ignore
         if len(args) > 0 or len(kwargs) > 0:

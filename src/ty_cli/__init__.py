@@ -11,12 +11,12 @@ import argparse
 from collections import defaultdict
 import copy
 import inspect
-from typing import Any, Callable, cast, Dict, Optional, TypeVar
+from typing import Any, Callable, cast, Dict, List, Optional, TypeVar
 
 FuncType = Callable[..., Any]
 F = TypeVar('F', bound=FuncType)
 
-module_calls: Dict[str, F] = defaultdict(list)
+module_calls: Dict[str, List[F]] = defaultdict(list)
 
 
 def create_argparse_from_function_signature(fun: F) -> argparse.ArgumentParser:

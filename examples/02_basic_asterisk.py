@@ -11,5 +11,4 @@ def int_to_str(*, number: int, my_str: str = 'abc') -> str:
     return my_str
 
 
-
 cli()

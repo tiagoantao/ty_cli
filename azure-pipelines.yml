@@ -29,5 +29,19 @@ steps:
 
 - script: |
     pip --disable-pip-version-check install -U tox
-    tox
-  displayName: 'tox'
+    tox  -s false -- --junitxml=test-results.xml tests examples
+  displayName: 'Run tox'
+
+- task: PublishTestResults@2
+  inputs:
+    testResultsFiles: test-results.xml
+    testRunTitle: $(Agent.JobName)
+  condition: eq(variables['hasTestResults'], 'true')
+  displayName: Publish test results
+
+- task: PublishCodeCoverageResults@1
+  inputs:
+    codeCoverageTool: Cobertura
+    summaryFileLocation: coverage.xml
+  condition: eq(variables['hasTestResults'], 'true')
+  displayName: Publish coverage results

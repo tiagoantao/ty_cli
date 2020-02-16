@@ -4,7 +4,7 @@ from setuptools import setup
 with open('src/ty_cli/__init__.py', 'rt', encoding='utf8') as f:
     version = re.search(r"__version__ = '(.*?)'", f.read()).group(1)
 
-extras_require = {
+EXTRAS_REQUIRE = {
     'test': [
         'mypy>=0.740',
         'pytest',
@@ -21,6 +21,9 @@ CLASSIFIERS = [
     'Development Status :: 3 - Alpha',
     'Intended Audience :: Developers',
     'License :: OSI Approved :: GNU Affero General Public License v3',
+    'Programming Language :: Python :: 3.7',
+    'Programming Language :: Python :: 3.8',
+    'Programming Language :: Python :: 3 :: Only',
     'Topic :: Software Development :: Libraries'
 ]
 
@@ -32,5 +35,6 @@ setup(name='ty_cli',
       author_email='tiago@tiago.org',
       license='AGPLv3',
       python_requires=">=3.7",
+      extras_require=EXTRAS_REQUIRE,
       classifiers=CLASSIFIERS
       )

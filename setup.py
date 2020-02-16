@@ -1,5 +1,5 @@
 import re
-from setuptools import setup
+from setuptools import find_packages, setup
 
 with open('src/ty_cli/__init__.py', 'rt', encoding='utf8') as f:
     version = re.search(r"__version__ = '(.*?)'", f.read()).group(1)
@@ -34,6 +34,8 @@ setup(name='ty_cli',
       author='Tiago Antao',
       author_email='tiago@tiago.org',
       license='AGPLv3',
+      packages=find_packages("src"),
+      package_dir={"": "src"},
       python_requires=">=3.7",
       extras_require=EXTRAS_REQUIRE,
       classifiers=CLASSIFIERS

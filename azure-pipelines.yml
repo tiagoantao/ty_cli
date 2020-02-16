@@ -29,7 +29,7 @@ steps:
 
 - script: |
     pip --disable-pip-version-check install -U tox
-    tox # -s false -- --junitxml=test-results.xml tests
+    tox -- --junitxml=test-results.xml tests
   displayName: 'Run tox'
 
 - task: PublishTestResults@2

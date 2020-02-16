@@ -3,8 +3,9 @@ trigger:
 
 pool:
   vmImage: 'ubuntu-latest'
-TOXENV: 'py,coverage-ci'
-hasTestResults: 'true'
+
+variables:
+  TOXENV: 'py,coverage'
 
 strategy:
   matrix:
@@ -39,12 +40,10 @@ steps:
   inputs:
     testResultsFiles: test-results.xml
     testRunTitle: $(Agent.JobName)
-  #condition: eq(variables['hasTestResults'], 'true')
   displayName: Publish test results
 
 - task: PublishCodeCoverageResults@1
   inputs:
     codeCoverageTool: Cobertura
     summaryFileLocation: coverage.xml
-  condition: eq(variables['hasTestResults'], 'true')
   displayName: Publish coverage results

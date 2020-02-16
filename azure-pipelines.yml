@@ -3,6 +3,9 @@ trigger:
 
 pool:
   vmImage: 'ubuntu-latest'
+TOXENV: 'py,coverage-ci'
+hasTestResults: 'true'
+
 strategy:
   matrix:
     Python37:

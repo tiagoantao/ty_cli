@@ -36,7 +36,7 @@ steps:
   inputs:
     testResultsFiles: test-results.xml
     testRunTitle: $(Agent.JobName)
-  condition: eq(variables['hasTestResults'], 'true')
+  #condition: eq(variables['hasTestResults'], 'true')
   displayName: Publish test results
 
 - task: PublishCodeCoverageResults@1

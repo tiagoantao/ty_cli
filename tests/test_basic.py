@@ -2,13 +2,13 @@ import ty_cli
 
 
 def _fun_int_to_str(number: int) -> str:
-    '''Some documentation'''
-    return f'{number}'
+    """Some documentation"""
+    return f"{number}"
 
 
 def test_basic():
     wrapped_fun = ty_cli.cli(_fun_int_to_str)
-    assert wrapped_fun(2) == '2'
+    assert wrapped_fun(2) == "2"
 
 
 def test_signature():  # Do we really want to do this?

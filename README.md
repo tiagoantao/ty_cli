@@ -1,6 +1,7 @@
 # ty_cli
 
 [![Build Status](https://dev.azure.com/tiagoantao/ty_cli/_apis/build/status/tiagoantao.ty_cli?branchName=master)](https://dev.azure.com/tiagoantao/ty_cli/_build/latest?definitionId=2&branchName=master)
+[![Code style: black][https://pepy.tech/badge/black]](https://pepy.tech/badge/black)
 
 ## Intro
 
@@ -9,8 +10,8 @@ library. Because it decides everything for you, its interface is dead
 simple. Its particularly good if you need a quick CLI interface with
 almost zero effort.
 
-It is based on and requires type annotations (a la in mypy). It requires
-Python 3.7 or above.
+It is based on and requires type annotations (à la mypy). Uses Python
+3.7 or above.
 
 
 ## Examples

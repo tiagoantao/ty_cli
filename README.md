@@ -1,7 +1,7 @@
 # ty_cli
 
 [![Build Status](https://dev.azure.com/tiagoantao/ty_cli/_apis/build/status/tiagoantao.ty_cli?branchName=master)](https://dev.azure.com/tiagoantao/ty_cli/_build/latest?definitionId=2&branchName=master)
-[![Code style: black](https://pepy.tech/badge/black)](https://pepy.tech/badge/black)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 ## Intro
 

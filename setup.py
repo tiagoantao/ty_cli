@@ -2,7 +2,7 @@ import re
 from setuptools import find_packages, setup
 
 with open('src/ty_cli/__init__.py', 'rt', encoding='utf8') as f:
-    version = re.search(r"__version__ = '(.*?)'", f.read()).group(1)
+    version = re.search(r"__version__ = \"(.*?)\"", f.read()).group(1)
 
 EXTRAS_REQUIRE = {
     'test': [

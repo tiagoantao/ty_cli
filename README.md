@@ -11,7 +11,7 @@ simple. Its particularly good if you need a quick CLI interface with
 almost zero effort.
 
 It is based on and requires type annotations (à la mypy). Uses Python
-3.7 or above.
+3.8 or above.
 
 
 ## Examples

@@ -15,8 +15,8 @@ import sys
 import typing
 from typing import Any, Callable, Dict, Optional, TypeVar, Union
 
-FuncType = Callable[..., Any]
-F = TypeVar("F", bound=FuncType)
+F = Callable[..., Any]
+#F = TypeVar("F", bound=FuncType)
 
 module_calls: Dict[str, Dict[str, F]] = defaultdict(dict)
 
@@ -35,6 +35,7 @@ def create_argparse_from_function_signature(fun: F) -> argparse.ArgumentParser:
     arg_spec = inspect.getfullargspec(fun)
     for arg in arg_spec.args:
         annotations = arg_spec.annotations[arg]
+        arg_cli = arg.replace("_", "-")        
         if typing.get_origin(annotations) is Union and typing.get_args(annotations)[1] is type(None):
             is_optional = True
             my_type = typing.get_args(annotations)[0]
@@ -46,7 +47,7 @@ def create_argparse_from_function_signature(fun: F) -> argparse.ArgumentParser:
             parser.add_argument(
                 "--" + arg_cli,
                 type=my_type,
-                default=arg_spec.kwonlydefaults[arg] if has_default else None,
+                default=arg_spec.kwonlydefaults[arg] if arg_spec.kwonlydefaults is not None else None,
             )
         else:
             parser.add_argument(arg, type=arg_spec.annotations[arg])
@@ -65,7 +66,7 @@ def create_argparse_from_function_signature(fun: F) -> argparse.ArgumentParser:
             parser.add_argument(
                 "--" + arg_cli,
                 type=my_type,
-                default=arg_spec.kwonlydefaults[arg] if has_default else None
+                default=arg_spec.kwonlydefaults[arg] if arg_spec.kwonlydefaults is not None else None
             )
         else:
             parser.add_argument(
@@ -131,8 +132,8 @@ def cli(fun: Optional[F] = None) -> Optional[F]:
     def wrapper(*args, **kwargs):  # type: ignore
         if len(args) > 0 or len(kwargs) > 0:
             # This is a non-cli call
-            return fun(*args, **kwargs)
-        return try_call_using_cli(fun)
+            return fun(*args, **kwargs)  # type: ignore
+        return try_call_using_cli(fun)  # type: ignore
 
     # Is this even a good idea:
     wrapper.__annotations__ = copy.copy(fun.__annotations__)

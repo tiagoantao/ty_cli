@@ -21,7 +21,6 @@ CLASSIFIERS = [
     'Development Status :: 3 - Alpha',
     'Intended Audience :: Developers',
     'License :: OSI Approved :: GNU Affero General Public License v3',
-    'Programming Language :: Python :: 3.7',
     'Programming Language :: Python :: 3.8',
     'Programming Language :: Python :: 3 :: Only',
     'Topic :: Software Development :: Libraries'
@@ -36,7 +35,7 @@ setup(name='ty_cli',
       license='AGPLv3',
       packages=find_packages("src"),
       package_dir={"": "src"},
-      python_requires=">=3.7",
+      python_requires=">=3.8",
       extras_require=EXTRAS_REQUIRE,
       classifiers=CLASSIFIERS
       )

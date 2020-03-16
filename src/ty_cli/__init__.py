@@ -11,55 +11,79 @@ import argparse
 from collections import defaultdict
 import copy
 import inspect
-from typing import Any, Callable, cast, Dict, List, Optional, TypeVar
+import sys
+import typing
+from typing import Any, Callable, Dict, Optional, TypeVar, Union
 
 FuncType = Callable[..., Any]
 F = TypeVar("F", bound=FuncType)
 
-module_calls: Dict[str, List] = defaultdict(list)
+module_calls: Dict[str, Dict[str, F]] = defaultdict(dict)
 
 
 def create_argparse_from_function_signature(fun: F) -> argparse.ArgumentParser:
+    """Creates argparse arguments from a function signature.
+
+    :param fun: The function to extract the signature from.
+
+    :return: `argparse.ArgumentParser`. An ArgumentParser object.
+
+    """
     parser = argparse.ArgumentParser(
         description=fun.__name__ + ": " + (fun.__doc__ or "NA")
     )
     arg_spec = inspect.getfullargspec(fun)
     for arg in arg_spec.args:
-        parser.add_argument(arg, type=arg_spec.annotations[arg])
+        is_optional = typing.get_origin(annotations) is Union and typing.get_args(annotations)[1] is type(None)
+        has_default = arg_spec.defaults is not None and arg in arg_spec.defaults
+        parser.add_argument(arg,
+                            type=arg_spec.annotations[arg],
+                            required=not (is_optional or has_default),
+                            default=arg_spec.defaults[arg] if has_default else None)
     for arg in arg_spec.kwonlyargs:
+        annotations = arg_spec.annotations[arg]
         arg_cli = arg.replace("_", "-")
-        if arg_spec.kwonlydefaults is not None and arg in arg_spec.kwonlydefaults:
+        is_optional = typing.get_origin(annotations) is Union and typing.get_args(annotations)[1] is type(None)
+        has_default = arg_spec.kwonlydefaults is not None and arg in arg_spec.kwonlydefaults
+        if is_optional or has_default:
             parser.add_argument(
                 "--" + arg_cli,
                 type=arg_spec.annotations[arg],
-                default=arg_spec.kwonlydefaults[arg],
+                default=arg_spec.kwonlydefaults[arg] if has_default else None,
             )
         else:
             parser.add_argument(
                 "--" + arg_cli, type=arg_spec.annotations[arg], required=True
             )
-    print(arg_spec, arg_spec.args, arg_spec.kwonlyargs)
     return parser
 
 
 def call_with_arguments(fun: F, arguments: argparse.Namespace) -> None:
-    print(arguments._get_kwargs())
-    fun(*arguments._get_args(), **{k: v for k, v in arguments._get_kwargs()})
+    fun(*arguments._get_args(), **dict(arguments._get_kwargs()))
     return
 
 
 def try_call_using_cli(fun: F) -> None:
     parser = create_argparse_from_function_signature(fun)
     arguments = parser.parse_args()
-    print(arguments)
     call_with_arguments(fun, arguments)
 
 
-def emit_help(fun: F) -> str:
+def emit_help(_fun: F) -> str:
     pass
 
 
 def cli(fun: Optional[F] = None) -> Optional[F]:
+    """ This is the decorator AND invoker.
+
+    If called with a function as a parameter, then its in decorator mode,
+       marking a function for CLI parsing.
+    If called with no parameters then its call to a decorated function and
+       parameters will need to be fetched from the CLI before function
+       execution.
+
+    """
+    # XXX Missing: it can be a direct call to the function!!!
     frame = inspect.currentframe()
     outer_frame = inspect.getouterframes(frame)[1]
     if fun is None:
@@ -67,24 +91,40 @@ def cli(fun: Optional[F] = None) -> Optional[F]:
         if len(all_calls) == 0:
             pass
         elif len(all_calls) == 1:
-            all_calls[0]()
+            list(all_calls.values())[0]()
         else:
-            pass
+            subcommands = list(all_calls.keys())
+            if len(sys.argv) < 2:
+                print(
+                    f"You need to specific a subcommand from: {subcommands}",
+                    file=sys.stderr,
+                )
+                return None
+            subcommand = sys.argv[1]
+            if subcommand not in subcommands:
+                print(
+                    f"Your subcommand needs to be from {subcommands}",
+                    file=sys.stderr,
+                )
+                return None
+            del sys.argv[1]
+            all_calls[subcommand]()
+
         return None
 
     def wrapper(*args, **kwargs):  # type: ignore
         if len(args) > 0 or len(kwargs) > 0:
             # This is a non-cli call
             return fun(*args, **kwargs)
-        try_call_using_cli(fun)
+        return try_call_using_cli(fun)
 
     # Is this even a good idea:
     wrapper.__annotations__ = copy.copy(fun.__annotations__)
     wrapper.__defaults__ = copy.copy(fun.__defaults__)  # type: ignore
     wrapper.__kwdefaults__ = copy.copy(fun.__kwdefaults__)  # type: ignore
-    # XXX What about read-only fields like __code__.co.* ??
-    module_calls[outer_frame.filename].append(wrapper)
-    return cast(F, wrapper)
+    # What about read-only fields like __code__.co.* ??
+    module_calls[outer_frame.filename][fun.__name__] = wrapper
+    return typing.cast(F, wrapper)
 
 
 __all__ = ["__version__", "cli"]

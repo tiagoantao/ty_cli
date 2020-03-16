@@ -11,5 +11,10 @@ def greet(*, first_name: str, last_name: Optional[str]) -> None:
         print(f"Dear {first_name} {last_name}")
 
 
+@cli
+def bye(*, name: str) -> None:
+    print(f"bye {name}!")
+
+
 if __name__ == "__main__":
     cli()

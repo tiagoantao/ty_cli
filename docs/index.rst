@@ -1,10 +1,19 @@
-.. ty_cli documentation master file, created by
-   sphinx-quickstart on Sat Oct 19 20:39:15 2019.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+ty_cli: A very opinionated command line parser
+==============================================
 
-Welcome to ty_cli's documentation!
-==================================
+`ty_cli` is an extremely opinionated command line parsing
+library. Because it decides everything for you, its interface is dead
+simple. Its particularly good if you need a quick CLI interface with
+almost zero effort.
+
+It is based on and requires type annotations (à la mypy). Uses Python
+3.8 or above.
+
+Here is a first example::
+
+  
+
+
 
 .. toctree::
    :maxdepth: 2

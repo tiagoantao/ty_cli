@@ -34,8 +34,10 @@ def create_argparse_from_function_signature(fun: F) -> argparse.ArgumentParser:
     arg_spec = inspect.getfullargspec(fun)
     for arg in arg_spec.args:
         annotations = arg_spec.annotations[arg]
-        arg_cli = arg.replace("_", "-")        
-        if typing.get_origin(annotations) is Union and typing.get_args(annotations)[1] is type(None):
+        arg_cli = arg.replace("_", "-")
+        if typing.get_origin(annotations) is Union and typing.get_args(annotations)[
+            1
+        ] is type(None):
             is_optional = True
             my_type = typing.get_args(annotations)[0]
         else:
@@ -46,8 +48,10 @@ def create_argparse_from_function_signature(fun: F) -> argparse.ArgumentParser:
             parser.add_argument(
                 "--" + arg_cli,
                 type=my_type,
-                required= not is_optional,
-                default=arg_spec.kwonlydefaults[arg] if arg_spec.kwonlydefaults is not None else None,
+                required=not is_optional,
+                default=arg_spec.kwonlydefaults[arg]
+                if arg_spec.kwonlydefaults is not None
+                else None,
             )
         else:
             parser.add_argument(arg, type=arg_spec.annotations[arg])
@@ -55,23 +59,27 @@ def create_argparse_from_function_signature(fun: F) -> argparse.ArgumentParser:
     for arg in arg_spec.kwonlyargs:
         annotations = arg_spec.annotations[arg]
         arg_cli = arg.replace("_", "-")
-        if typing.get_origin(annotations) is Union and typing.get_args(annotations)[1] is type(None):
+        if typing.get_origin(annotations) is Union and typing.get_args(annotations)[
+            1
+        ] is type(None):
             is_optional = True
             my_type = typing.get_args(annotations)[0]
         else:
             is_optional = False
             my_type = arg_spec.annotations[arg]
-        has_default = arg_spec.kwonlydefaults is not None and arg in arg_spec.kwonlydefaults
+        has_default = (
+            arg_spec.kwonlydefaults is not None and arg in arg_spec.kwonlydefaults
+        )
         if is_optional or has_default:
             parser.add_argument(
                 "--" + arg_cli,
                 type=my_type,
-                default=arg_spec.kwonlydefaults[arg] if arg_spec.kwonlydefaults is not None else None
+                default=arg_spec.kwonlydefaults[arg]
+                if arg_spec.kwonlydefaults is not None
+                else None,
             )
         else:
-            parser.add_argument(
-                "--" + arg_cli, type=my_type, required=True
-            )
+            parser.add_argument("--" + arg_cli, type=my_type, required=True)
     return parser
 
 
@@ -128,8 +136,7 @@ def cli(fun: Optional[F] = None) -> Optional[F]:
             subcommand = sys.argv[1]
             if subcommand not in subcommands:
                 print(
-                    f"Your subcommand needs to be from {subcommands}",
-                    file=sys.stderr,
+                    f"Your subcommand needs to be from {subcommands}", file=sys.stderr,
                 )
                 return None
             del sys.argv[1]

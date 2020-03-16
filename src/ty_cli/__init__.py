@@ -34,26 +34,42 @@ def create_argparse_from_function_signature(fun: F) -> argparse.ArgumentParser:
     )
     arg_spec = inspect.getfullargspec(fun)
     for arg in arg_spec.args:
-        is_optional = typing.get_origin(annotations) is Union and typing.get_args(annotations)[1] is type(None)
+        annotations = arg_spec.annotations[arg]
+        if typing.get_origin(annotations) is Union and typing.get_args(annotations)[1] is type(None):
+            is_optional = True
+            my_type = typing.get_args(annotations)[0]
+        else:
+            is_optional = False
+            my_type = arg_spec.annotations[arg]
         has_default = arg_spec.defaults is not None and arg in arg_spec.defaults
-        parser.add_argument(arg,
-                            type=arg_spec.annotations[arg],
-                            required=not (is_optional or has_default),
-                            default=arg_spec.defaults[arg] if has_default else None)
+        if is_optional or has_default:
+            parser.add_argument(
+                "--" + arg_cli,
+                type=my_type,
+                default=arg_spec.kwonlydefaults[arg] if has_default else None,
+            )
+        else:
+            parser.add_argument(arg, type=arg_spec.annotations[arg])
+
     for arg in arg_spec.kwonlyargs:
         annotations = arg_spec.annotations[arg]
         arg_cli = arg.replace("_", "-")
-        is_optional = typing.get_origin(annotations) is Union and typing.get_args(annotations)[1] is type(None)
+        if typing.get_origin(annotations) is Union and typing.get_args(annotations)[1] is type(None):
+            is_optional = True
+            my_type = typing.get_args(annotations)[0]
+        else:
+            is_optional = False
+            my_type = arg_spec.annotations[arg]
         has_default = arg_spec.kwonlydefaults is not None and arg in arg_spec.kwonlydefaults
         if is_optional or has_default:
             parser.add_argument(
                 "--" + arg_cli,
-                type=arg_spec.annotations[arg],
-                default=arg_spec.kwonlydefaults[arg] if has_default else None,
+                type=my_type,
+                default=arg_spec.kwonlydefaults[arg] if has_default else None
             )
         else:
             parser.add_argument(
-                "--" + arg_cli, type=arg_spec.annotations[arg], required=True
+                "--" + arg_cli, type=my_type, required=True
             )
     return parser
 

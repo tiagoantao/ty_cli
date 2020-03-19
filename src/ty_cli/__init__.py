@@ -85,7 +85,6 @@ def create_argparse_from_function_signature(fun: F) -> argparse.ArgumentParser:
 
 def call_with_arguments(fun: F, arguments: argparse.Namespace) -> None:
     fun(*arguments._get_args(), **dict(arguments._get_kwargs()))
-    return
 
 
 def call_using_cli(fun: F) -> None:
@@ -97,10 +96,6 @@ def call_using_cli(fun: F) -> None:
     parser = create_argparse_from_function_signature(fun)
     arguments = parser.parse_args()
     call_with_arguments(fun, arguments)
-
-
-def emit_help(_fun: F) -> str:
-    pass
 
 
 def cli(fun: Optional[F] = None) -> Optional[F]:
@@ -157,6 +152,11 @@ def cli(fun: Optional[F] = None) -> Optional[F]:
     # What about read-only fields like __code__.co.* ??
     module_calls[outer_frame.filename][fun.__name__] = wrapper
     return typing.cast(F, wrapper)
+
+
+def _clean_call_dictionary():
+    """Cleans the call dictionary"""
+    module_calls = defaultdict
 
 
 __all__ = ["__version__", "cli"]

@@ -1,3 +1,5 @@
+import sys
+
 import ty_cli
 
 
@@ -20,5 +22,14 @@ def test_signature():  # Do we really want to do this?
     assert wrapped_fun.__kwdefaults__ == _fun_int_to_str.__kwdefaults__
 
 
-def test_create_argparse_from_function_signature():
-    ty_cli.create_argparse_from_function_signature(_fun_int_to_str)
+def test_main_invocation():
+    """Testing cli without a function (as from __main__).
+    """
+    sys.argv = ['TEST', '5']
+    ty_cli._clean_call_dictionary()
+    ty_cli.cli(_fun_int_to_str)
+    ty_cli.cli()
+
+
+    #def test_create_argparse_from_function_signature():
+#    ty_cli.create_argparse_from_function_signature(_fun_int_to_str)

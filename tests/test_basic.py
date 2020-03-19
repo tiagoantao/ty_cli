@@ -1,12 +1,27 @@
 import sys
+from typing import Optional
 
 import ty_cli
 
 
 def _fun_int_to_str(number: int) -> str:
-    """Some documentation"""
+    """Integer to String"""
     return f"{number}"
 
+
+def _fun_int_to_str_opt(number: Optional[int]) -> str:
+    """Integer (or None) to String"""
+    if number is None:
+        return "Nothing"
+    else:
+        return f"{number}"
+
+
+def _fun_add_int_to_str(number1: int, number2: int = 0) -> str:
+    """Integer sum to String"""
+    return f"{number1 + number2}"
+
+    
 
 def test_basic():
     """Tests if a wrapped function, returns the expected value"""
@@ -29,6 +44,14 @@ def test_main_invocation():
     ty_cli._clean_call_dictionary()
     ty_cli.cli(_fun_int_to_str)
     ty_cli.cli()
+    # Optional example
+    ty_cli._clean_call_dictionary()
+    ty_cli.cli(_fun_int_to_str_opt)
+    ty_cli.cli()
+    # default example
+    #ty_cli._clean_call_dictionary()
+    #ty_cli.cli(_fun_add_int_to_str)
+    #ty_cli.cli()
 
 
     #def test_create_argparse_from_function_signature():

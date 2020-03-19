@@ -35,7 +35,10 @@ hello()
 
 `python hello.py Randi`
 
-If you want, you can force the naming on parameters on the CLI:
+### Named parameters
+
+If you want, you can force the naming on parameters on the CLI
+(exactly as you would force it in Python, of course):
 
 ```python
 from ty_cli import cli
@@ -48,7 +51,51 @@ def hello(*, name: str) -> None:
 `python hello.py --name Randi`
 
 
-[Documentation](docs/index.rst)
+### Multiple commands
+
+ty_cli supports multiple commands:
+
+
+```python
+from typing import Optional
+
+from ty_cli import cli
+
+
+@cli
+def greet(*, first_name: str, last_name: Optional[str]) -> None:
+    if last_name is None:
+        print(f"Howdy {first_name}!")
+    else:
+        print(f"Greetings {first_name} {last_name}")
+
+
+@cli
+def bye(*, name: str) -> None:
+    print(f"Bye {name}!")
+
+
+if __name__ == "__main__":
+    cli()
+```
+
+This can be used as follows:
+
+```sh
+python multi_hello.py greet --first-name Randi
+Howdy Randi!
+
+python multi_hello.py greet --first-name Randi --last-name Taira
+Greetings Randi Taira
+
+python multi_hello.py bye --name Randi
+Bye Randi!
+```
+
+
+## Documentation
+
+[Documentation is available with more examples](docs/index.rst)
 
 
 ## Legalese

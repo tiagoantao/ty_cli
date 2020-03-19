@@ -22,7 +22,7 @@ import ty_cli
 # -- Project information -----------------------------------------------------
 
 project = u'ty_cli'
-copyright = u'2019, Tiago Antao'
+copyright = u'2019-2020, Tiago Antao'
 author = u'Tiago Antao'
 
 # The short X.Y version

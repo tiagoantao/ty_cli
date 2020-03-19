@@ -1,32 +1,25 @@
-===========
 Development
 ===========
 
-Basic instructions
-------------------
 
 Building documentation
-^^^^^^^^^^^^^^^^^^^^^^
+----------------------
 
 python setup.py build_sphinx
 
 
-Testing
-^^^^^^^
+Code formatting
+---------------
 
-tox
+We use Python Black for formatting.
 
+Documentation is produced sith Sphinx.
 
-Standards
----------
-
-Code commenting
-^^^^^^^^^^^^^^^
-
-We use Sphinx for commenting. This extends to the documentation
-standard inside Python code.
+RST format is used *inside* Python comments.
 
 Testing
-^^^^^^^
+-------
 
-If possible use doctest, if not use unittest. Test everything
+Test coverage has a minimum of 100%. Really.
+
+We use tox and pytest. Call `tox` to test.

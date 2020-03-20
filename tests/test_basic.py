@@ -37,11 +37,24 @@ def test_signature():  # Do we really want to do this?
 
 
 def test_main_invocation():
-    """Testing cli without a function (as from __main__).
+    """Testing cli without a function parameter (as from __main__).
     """
     sys.argv = ['TEST', '5']
     ty_cli._clean_call_dictionary()
     ty_cli.cli(_fun_int_to_str)
+    ty_cli.cli()
+
+
+def test_subcommands():
+    """Testing cli without a function (as from __main__). Subcommand version.
+    """
+    # XXX Need to grab output
+    sys.argv = ['TEST', '_fun_int_to_str', '3']
+    ty_cli._clean_call_dictionary()
+    ty_cli.cli(_fun_int_to_str)
+    ty_cli.cli(_fun_add_int_to_str)
+    ty_cli.cli()
+    sys.argv = ['TEST', '5']
     ty_cli.cli()
 
 

@@ -117,7 +117,7 @@ def cli(fun: Optional[F] = None) -> Optional[F]:
     if fun is None:
         all_calls = module_calls[outer_frame.filename]
         if len(all_calls) == 0:
-            pass
+            pass  # Nothing defined - XXX what to do?
         elif len(all_calls) == 1:
             list(all_calls.values())[0]()
         else:

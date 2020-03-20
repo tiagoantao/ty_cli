@@ -12,11 +12,6 @@ def _fun_int_to_str_opt(number: Optional[int]) -> str:
         return f"{number}"
 
 
-def _fun_add_int_to_str(number1: int, number2: int = 0) -> str:
-    """Integer sum to String"""
-    return f"{number1 + number2}"
-
-
 def test_optional():
     """Tests optional call"""
     wrapped_fun = ty_cli.cli(_fun_int_to_str_opt)
@@ -32,7 +27,3 @@ def test_main_invocation():
     ty_cli._clean_call_dictionary()
     ty_cli.cli(_fun_int_to_str_opt)
     ty_cli.cli()
-    # default example
-    #ty_cli._clean_call_dictionary()
-    #ty_cli.cli(_fun_add_int_to_str)
-    #ty_cli.cli()

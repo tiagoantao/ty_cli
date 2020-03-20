@@ -54,6 +54,8 @@ def test_subcommands():
     ty_cli.cli(_fun_int_to_str)
     ty_cli.cli(_fun_add_int_to_str)
     ty_cli.cli()
+    sys.argv = ['TEST']
+    ty_cli.cli()
     sys.argv = ['TEST', '5']
     ty_cli.cli()
 

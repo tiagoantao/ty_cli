@@ -14,7 +14,8 @@ def _fun_add_int_to_str_kw(*, number1: int, number2: int = 0) -> str:
 
 
 def test_kwargs():
-    """Tests kwarg call"""
+    """Tests keyowrd only call"""
+    ty_cli._clean_call_dictionary()
     wrapped_fun = ty_cli.cli(_fun_int_to_str_kw)
     assert wrapped_fun(number=2) == "2"
 

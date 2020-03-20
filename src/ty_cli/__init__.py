@@ -156,7 +156,8 @@ def cli(fun: Optional[F] = None) -> Optional[F]:
 
 def _clean_call_dictionary():
     """Cleans the call dictionary"""
-    module_calls = defaultdict
+    global module_calls
+    module_calls = defaultdict(dict)
 
 
 __all__ = ["__version__", "cli"]

@@ -13,7 +13,7 @@ import copy
 import inspect
 import sys
 import typing
-from typing import Any, Callable, Dict, Optional, TypeVar, Union
+from typing import Any, Callable, Dict, Optional, Union
 
 F = Callable[..., Any]
 
@@ -35,9 +35,10 @@ def create_argparse_from_function_signature(fun: F) -> argparse.ArgumentParser:
     for arg in arg_spec.args:
         annotations = arg_spec.annotations[arg]
         arg_cli = arg.replace("_", "-")
-        if typing.get_origin(annotations) is Union and typing.get_args(annotations)[
-            1
-        ] is type(None):
+        if (
+            typing.get_origin(annotations) is Union
+            and typing.get_args(annotations)[1] is None
+        ):
             is_optional = True
             my_type = typing.get_args(annotations)[0]
         else:
@@ -59,9 +60,10 @@ def create_argparse_from_function_signature(fun: F) -> argparse.ArgumentParser:
     for arg in arg_spec.kwonlyargs:
         annotations = arg_spec.annotations[arg]
         arg_cli = arg.replace("_", "-")
-        if typing.get_origin(annotations) is Union and typing.get_args(annotations)[
-            1
-        ] is type(None):
+        if (
+            typing.get_origin(annotations) is Union
+            and typing.get_args(annotations)[1] is None
+        ):
             is_optional = True
             my_type = typing.get_args(annotations)[0]
         else:
@@ -83,11 +85,11 @@ def create_argparse_from_function_signature(fun: F) -> argparse.ArgumentParser:
     return parser
 
 
-def call_with_arguments(fun: F, arguments: argparse.Namespace) -> None:
-    fun(*arguments._get_args(), **dict(arguments._get_kwargs()))
+def call_with_arguments(fun: F, arguments: argparse.Namespace) -> Any:
+    return fun(*arguments._get_args(), **dict(arguments._get_kwargs()))
 
 
-def call_using_cli(fun: F) -> None:
+def call_using_cli(fun: F) -> Any:
     """Call a function parametrized by the CLI.
 
     :param fun: The function to extract the signature from.
@@ -95,10 +97,10 @@ def call_using_cli(fun: F) -> None:
     """
     parser = create_argparse_from_function_signature(fun)
     arguments = parser.parse_args()
-    call_with_arguments(fun, arguments)
+    return call_with_arguments(fun, arguments)
 
 
-def cli(fun: Optional[F] = None) -> Optional[F]:
+def cli(fun: Optional[F] = None) -> Any:
     """ This is the decorator AND invoker.
 
     If called with a function as a parameter, then its in decorator mode,
@@ -111,7 +113,6 @@ def cli(fun: Optional[F] = None) -> Optional[F]:
 
     :returns: If used as a decorator (has parameter) then return a function
     """
-    # XXX Missing: it can be a direct call to the function!!!
     frame = inspect.currentframe()
     outer_frame = inspect.getouterframes(frame)[1]
     if fun is None:

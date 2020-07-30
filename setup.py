@@ -6,7 +6,7 @@ with open("src/ty_cli/__init__.py", "rt", encoding="utf8") as f:
 
 EXTRAS_REQUIRE = {
     "test": ["mypy>=0.740", "pytest", "pytest-cov", "tox"],
-    "docs": ["sphinx", "sphinx-rtd-theme",],
+    "docs": ["sphinx", "sphinx-rtd-theme"],
 }
 
 CLASSIFIERS = [

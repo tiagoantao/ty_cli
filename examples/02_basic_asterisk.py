@@ -13,3 +13,4 @@ def int_to_str(*, number: int, my_str: str = "abc") -> str:
 
 if __name__ == "__main__":
     cli()
+    # Alternatively you can do int_to_str() - no parameters

@@ -6,6 +6,4 @@ def int_to_str(number: int) -> str:
     return f"{number}"
 
 
-if __name__ == "__main__":
-    print(int_to_str())
-    # Alernatively you can do cli()
+print(int_to_str(1234))

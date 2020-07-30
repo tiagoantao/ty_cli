@@ -23,10 +23,10 @@ from ty_cli import cli
 
 @cli
 def hello(name: str) -> None:
-    '''Hello world: the typical example.
+    """Hello world: the typical example.
     
-    Here is some documentation'''
-    print(f'Hello {name}')
+    Here is some documentation"""
+    print(f"Hello {name}")
     
 hello()
 ```
@@ -45,7 +45,7 @@ from ty_cli import cli
 
 @cli
 def hello(*, name: str) -> None:
-    print(f'Hello {name}')
+    print(f"Hello {name}")
 ```
 
 `python hello.py --name Randi`

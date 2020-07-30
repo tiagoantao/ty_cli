@@ -22,7 +22,7 @@ def test_optional():
 def test_main_invocation():
     """Testing cli without a function (as from __main__).
     """
-    sys.argv = ['TEST', '--number', '5']
+    sys.argv = ["TEST", "--number", "5"]
     # Optional example
     ty_cli._clean_call_dictionary()
     ty_cli.cli(_fun_int_to_str_opt)

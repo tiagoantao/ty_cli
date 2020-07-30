@@ -39,13 +39,9 @@ def test_kwonly_optional():
 def test_main_invocation():
     """Testing cli without a function (as from __main__).
     """
-    sys.argv = ['TEST', '--number1', '5']
+    sys.argv = ["TEST", "--number1", "5"]
     # Optional example
     ty_cli._clean_call_dictionary()
     ty_cli.cli(_fun_add_int_to_str_kw)
     ty_cli.cli()
     ty_cli._clean_call_dictionary()
-    sys.argv = ['TEST']
-    ty_cli.cli(_fun_int_to_str_kw_optional)
-    ty_cli.cli()
-

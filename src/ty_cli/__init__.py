@@ -117,11 +117,9 @@ def cli(fun: Optional[F] = None) -> Any:
     outer_frame = inspect.getouterframes(frame)[1]
     if fun is None:
         all_calls = module_calls[outer_frame.filename]
-        if len(all_calls) == 0:
-            pass  # Nothing defined - XXX what to do?
-        elif len(all_calls) == 1:
+        if len(all_calls) == 1:
             list(all_calls.values())[0]()
-        else:
+        elif len(all_calls) > 1:
             subcommands = list(all_calls.keys())
             if len(sys.argv) < 2:
                 print(
@@ -146,7 +144,7 @@ def cli(fun: Optional[F] = None) -> Any:
             return fun(*args, **kwargs)  # type: ignore
         return call_using_cli(fun)  # type: ignore
 
-    # Is this even a good idea:
+    # Is this even a good idea?
     wrapper.__annotations__ = copy.copy(fun.__annotations__)
     wrapper.__defaults__ = copy.copy(fun.__defaults__)  # type: ignore
     wrapper.__kwdefaults__ = copy.copy(fun.__kwdefaults__)  # type: ignore

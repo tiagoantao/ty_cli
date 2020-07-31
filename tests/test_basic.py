@@ -62,3 +62,10 @@ def test_subcommands():
 
 # def test_create_argparse_from_function_signature():
 #     ty_cli.create_argparse_from_function_signature(_fun_int_to_str)
+
+
+def test_sillyness():
+    # Just to make coverage of the test file go to 100%
+    _fun_add_int_to_str(1, 2)
+    _fun_int_to_str_opt(None)
+    _fun_int_to_str_opt(1)

@@ -48,3 +48,9 @@ def test_main_invocation():
     sys.argv = ['TEST']
     ty_cli.cli(_fun_int_to_str_kw_optional)
     ty_cli.cli()
+
+
+def test_sillyness():
+    # Just to make coverage of the test file go to 100%
+    _fun_int_to_str_kw(number=1)
+    _fun_int_to_str_kw_optional(number=1)

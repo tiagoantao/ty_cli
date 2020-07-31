@@ -9,7 +9,7 @@ def _fun_int_to_str_kw(*, number: int) -> str:
     return f"{number}"
 
 
-def _fun_int_to_str_kw_optional(*, number: Optional[int]) -> str:
+def _fun_int_to_str_kw_optional(*, number: Optional[int] = None) -> str:
     """Parameter has to be named"""
     if number is None:
         return "Nothing here"
@@ -45,3 +45,6 @@ def test_main_invocation():
     ty_cli.cli(_fun_add_int_to_str_kw)
     ty_cli.cli()
     ty_cli._clean_call_dictionary()
+    sys.argv = ['TEST']
+    ty_cli.cli(_fun_int_to_str_kw_optional)
+    ty_cli.cli()

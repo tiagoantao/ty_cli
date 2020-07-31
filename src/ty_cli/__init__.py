@@ -37,7 +37,7 @@ def create_argparse_from_function_signature(fun: F) -> argparse.ArgumentParser:
         arg_cli = arg.replace("_", "-")
         if (
             typing.get_origin(annotations) is Union
-            and typing.get_args(annotations)[1] is None
+            and typing.get_args(annotations)[1] is type(None)
         ):
             is_optional = True
             my_type = typing.get_args(annotations)[0]
@@ -62,7 +62,7 @@ def create_argparse_from_function_signature(fun: F) -> argparse.ArgumentParser:
         arg_cli = arg.replace("_", "-")
         if (
             typing.get_origin(annotations) is Union
-            and typing.get_args(annotations)[1] is None
+            and typing.get_args(annotations)[1] is type(None)
         ):
             is_optional = True
             my_type = typing.get_args(annotations)[0]
